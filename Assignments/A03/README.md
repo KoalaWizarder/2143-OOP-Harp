@@ -8,6 +8,7 @@ This program implements a list data structure that links together nodes of integ
 |   #   | File     | Description                      |
 | :---: | -------- | -------------------------------- |
 |   1   | [main.cpp](https://github.com/KoalaWizarder/2143-OOP-Harp/blob/main/Assignments/A03/main.cpp) | Main driver of my list program. |
+|       | [banner.txt](https://github.com/KoalaWizarder/2143-OOP-Harp/blob/main/Assignments/A03/banner.txt) | File containing personalized banner. |
 
 
 ### Instructions
