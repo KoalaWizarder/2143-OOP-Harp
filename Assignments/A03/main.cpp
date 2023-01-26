@@ -8,10 +8,23 @@
 *  Semester:         Spring 2023
 * 
 *  Description:
-*        describe program here thoroughly 
+*        -Program uses CircularArrayQue (class object defined below) to implement 
+*           a queue (FIFO) system. If size of queue is not chosen at initialization,
+*           default size of 10 will be chosen.
+*        -The queue will NOT resize if attempting to push a new value onto it while
+*           it is full.
+*           
 * 
 *  Usage:
-*        how to use the program if necessary
+*        -Initialize queue object:
+*               CircularArrayQue name;
+*          OR:
+*               CircularArrayQue name(int);      (int will determine size)
+*
+*        -Add items to end of queue:
+*               name.push(int);                  (int = data to be stored)
+*        -Return/Delete first item in queue:
+*               name.pop();
 * 
 *  Files:
 *        N/A
