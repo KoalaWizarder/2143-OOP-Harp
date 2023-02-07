@@ -1,4 +1,5 @@
-/******************************************************************************              
+/******************************************************************************
+*                    
 *  Author:           Mervyn Harp
 *  Email:            mtharp0818@msutexas.edu
 *  Label:            04-P01
@@ -31,7 +32,8 @@ using namespace std;
 *   Description:
 *     []This struct is used as a container for data that is then linked 
 *           together within the 'Vector' class
-*     []Is NOT used anywhere outside of 'Vector'                             */
+*     []Is NOT used anywhere outside of 'Vector'
+******************************************************************************/
 struct node{
     int data;               //Holds data for node
     node* next;             //Hold pointer to next node for use in Vector class
@@ -104,7 +106,8 @@ struct node{
 *                                               [Default: 0] and the final
 *                                               node will contain value (y) 
 *                                               [Default: 0]
-*     []void    :   print()             ->  Outputs Vectors to "test.out"    */
+*     []void    :   print()             ->  Outputs Vectors to "test.out"       
+******************************************************************************/
 class Vector{
 private:
     node* head;                     //node pointer for front of Vector
@@ -141,6 +144,8 @@ public:
 };  
 
 int main(){
+
+
     //Functions to clear output file before Vector::print() appends data to it
 	ofstream outfile;
     outfile.open("test.out");
@@ -221,7 +226,9 @@ int main(){
     Vector v4("input.dat");
     v4.pushRear(v3);
     v4.print();
-    // [56, 61, 97, 66, 83, 25, 26, 11, 53, 49, 62, 18, 10, 18, 14, 3, 4, 23, 18, 24, 26, 27, 54, 14, 12, 45, 65, 98, 56, 97, 15, 84, 98, 9, 11, 25, 33, 47, 51, 63, 18, 20, 25, 9, 11, 25, 27, 33]
+    // [56, 61, 97, 66, 83, 25, 26, 11, 53, 49, 62, 18, 10, 18, 14, 3, 4, 23, 
+    // 18, 24, 26, 27, 54, 14, 12, 45, 65, 98, 56, 97, 15, 84, 98, 9, 11, 25, 
+    // 33, 47, 51, 63, 18, 20, 25, 9, 11, 25, 27, 33]
 
 }
 
@@ -263,15 +270,31 @@ Vector::Vector(Vector& v2){
     }
 }
 
+/******************************************************************************
+* Function:     getSize()
+* Parameters:   N/A  
+* Returns:      [int] vectSize  :   Number of values in current Vector       */
 int Vector::getSize(){
     return vectSize;
 }
+/******************************************************************************
+* Function:     peekFront() 
+* Parameters:   N/A  
+* Returns:      [int] data      :   Value at front of Vector                 */
 int Vector::peekFront(){
     return head->data;
 }
+/******************************************************************************
+* Function:     peekRear()
+* Parameters:   N/A  
+* Returns:      [int] data      :   Value at back of Vector                  */
 int Vector::peekRear(){
     return tail->data;
 }
+/******************************************************************************
+* Function:     getInd(int index) 
+* Parameters:   [int] index     :   Index within the Vector
+* Returns:      [int] data      :   Value at (index)                         */
 int Vector::peekInd(int index){
     if(index == 0)
         return peekFront();
@@ -286,10 +309,9 @@ int Vector::peekInd(int index){
     }
 }
 
-
 /******************************************************************************
 * Function:     pushFront(int data) 
-* Parameters:   [int] data      :   Value to be added to Vector   
+* Parameters:   [int] data      :   Value to be added to front of Vector   
 * Returns:      N/A                                                          */
 void Vector::pushFront(int data){
     node* temp = new node(data, head);
@@ -300,14 +322,19 @@ void Vector::pushFront(int data){
     head = temp;
     vectSize++;
 }
+/******************************************************************************
+* Function:     pushFront(Vector &v2) 
+* Parameters:   [Vector&] v2    :   Vector to be copied and added to front of
+*                                       current Vector   
+* Returns:      N/A                                                          */
 void Vector::pushFront(Vector &v2){
     for(int i = v2.getSize()-1; i >= 0; i--){
         pushFront(v2.peekInd(i));
     }
 }
 /******************************************************************************
-* Function:     pushFront(int data) 
-* Parameters:   [int] data      :   Value to be added to Vector   
+* Function:     pushRear(int data) 
+* Parameters:   [int] data      :   Value to be added to rear of Vector 
 * Returns:      N/A                                                          */
 void Vector::pushRear(int data){
     if(tail){
@@ -320,12 +347,22 @@ void Vector::pushRear(int data){
 
     vectSize++;
 }
+/******************************************************************************
+* Function:     pushRear(Vector &v2) 
+* Parameters:   [Vector&] v2    :   Vector to be copied and added to end of 
+*                                       current Vector
+* Returns:      N/A                                                          */
 void Vector::pushRear(Vector &v2){
     for(int i = 0; i < v2.getSize(); i++){
         pushRear(v2.peekInd(i));
     }
 }
 
+/******************************************************************************
+* Function:     popFront() 
+* Parameters:   N/A 
+* Returns:      [int] data      :   Value stored at front of Vector
+*                                       (Also deletes value from Vector)     */
 int Vector::popFront(){
     int data;
     if(vectSize == 1){
@@ -346,6 +383,11 @@ int Vector::popFront(){
         return data;
     }
 }
+/******************************************************************************
+* Function:     popRear() 
+* Parameters:   N/A 
+* Returns:      [int] data      :   Value stored at end of Vector
+*                                       (Also deletes value from Vector)     */
 int Vector::popRear(){
     int data;
     if(vectSize == 1){
@@ -367,6 +409,11 @@ int Vector::popRear(){
         return data;
     }
 }
+/******************************************************************************
+* Function:     popAt() 
+* Parameters:   [int] index     :   Index where desired value is at
+* Returns:      [int] data      :   Value stored at front of Vector
+*                                       (Also deletes value from Vector)     */
 int Vector::popAt(int index){
     if(index==0){
         vectSize--;
@@ -391,6 +438,11 @@ int Vector::popAt(int index){
     }
 }
 
+/******************************************************************************
+* Function:     find(int value) 
+* Parameters:   [int] value     :   Value to be found in Vector
+* Returns:      [int] data      :   Index where value was found
+*                                       ([-1] if NOT found)                  */
 int Vector::find(int value){
     if(head->data == value){
         return 0;
@@ -412,6 +464,14 @@ int Vector::find(int value){
     }
     return -1;
 }
+/******************************************************************************
+* Function:     resize(int _size, int data, int finalValue) 
+* Parameters:   [int] _size     :   Desired new size of Vector
+*               [int] data      :   Value that will fill Vector if (_size) is 
+*                                       larger than previous size 
+*               [int] finalValue:   Value that will be at end of Vector if 
+*                                       (_size) is larger than previous size 
+* Returns:      N/A                                                          */
 void Vector::resize(int _size, int data = 0, int finalValue = 0){
     if(_size > vectSize){
         for(int i = 0; i < (_size - vectSize)-1;i++){
@@ -427,6 +487,17 @@ void Vector::resize(int _size, int data = 0, int finalValue = 0){
     }
 }
 
+/******************************************************************************
+* Function:     pushAt(int index, int data, int filData, node* direct) 
+* Parameters:   [int] index     :   Index where desired value is at
+*                                       (Will resize larger if index is outside
+*                                        of current bounds)
+*               [int] data      :   Value to be pushed onto Vector at [index]
+*               [int] filData   :   Value to fill Vector if resizing is needed
+*               [node*] direct  :   Pointer to a node used by inOrderPush()
+*                                       to directly append a node that has been
+*                                       created in another method            
+* Returns:      N/A                                                          */
 void Vector::pushAt(int index, int data, int filData = 0, node* direct = NULL){
     if(!direct){
         //if insert at beginning index, just use pushFront method
@@ -460,6 +531,12 @@ void Vector::pushAt(int index, int data, int filData = 0, node* direct = NULL){
         vectSize++;
     }
 }
+/******************************************************************************
+* Function:     inOrderPush(int _data) 
+* Parameters:   [int] _data     :   Data to be inserted in either ascending or
+*                                       descending order, which is decided by
+*                                       the method
+* Returns:      N/A                                                          */
 void Vector::inOrderPush(int _data){
     if(!head||(head->data == tail->data)){
         pushFront(_data);
@@ -512,6 +589,10 @@ void Vector::inOrderPush(int _data){
     }
 }
 
+/******************************************************************************
+* Function:     print() 
+* Parameters:   N/A
+* Returns:      N/A                                                          */
 void Vector::print(){
 
     ofstream outfile;
