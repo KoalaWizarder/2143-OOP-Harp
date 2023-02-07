@@ -1,5 +1,4 @@
-/******************************************************************************
-*                    
+/******************************************************************************                 
 *  Author:           Mervyn Harp
 *  Email:            mtharp0818@msutexas.edu
 *  Label:            04-P01
@@ -32,8 +31,7 @@ using namespace std;
 *   Description:
 *     []This struct is used as a container for data that is then linked 
 *           together within the 'Vector' class
-*     []Is NOT used anywhere outside of 'Vector'
-******************************************************************************/
+*     []Is NOT used anywhere outside of 'Vector'                             */
 struct node{
     int data;               //Holds data for node
     node* next;             //Hold pointer to next node for use in Vector class
@@ -106,8 +104,7 @@ struct node{
 *                                               [Default: 0] and the final
 *                                               node will contain value (y) 
 *                                               [Default: 0]
-*     []void    :   print()             ->  Outputs Vectors to "test.out"       
-******************************************************************************/
+*     []void    :   print()             ->  Outputs Vectors to "test.out"    */
 class Vector{
 private:
     node* head;                     //node pointer for front of Vector
