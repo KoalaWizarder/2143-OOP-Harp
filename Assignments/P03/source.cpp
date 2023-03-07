@@ -2,8 +2,66 @@
 #include <map> 
 #include <vector>
 #include <string>
+#include <cstring>
 
 using namespace std;
+
+string tolower(string &input){
+    string temp;
+    for(auto i = input.begin(); i != input.end(); i++)
+
+        if(*i == ':')
+            temp += ':';
+        else
+            temp += tolower(*i);
+
+    return temp;
+}
+
+vector<string> colors(){
+    return vector<string>{"aqua", "aquamarine", "azure", "beige", "bisque", "black", "blue", 
+        "blueviolet", "brown", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", 
+        "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", 
+        "darkgrey", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", 
+        "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkslategrey", "darkturquoise", 
+        "darkviolet", "deeppink", "deepskyblue", "dimgray", "dimgrey", "dodgerblue", "firebrick", 
+        "floralwhite", "forestgreen", "fuchsia", "gainsboro", "ghostwhite", "gold", "goldenrod", "gray", 
+        "honeydew", "hotpink", "indianred", "indigo", "invis", "ivory", "khaki", "lavender", "lavenderblush", 
+        "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrod", 
+        "lightgoldenrodyellow", "lightgray", "lightgreen", "lightgrey", "lightpink", "lightsalmon", 
+        "lightseagreen", "lightskyblue", "lightslateblue", "lightslategray", "lightslategrey", "lightsteelblue", 
+        "lightyellow", "lime", "limegreen", "linen", "magenta", "maroon", "mediumaquamarine", "mediumblue", 
+        "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", 
+        "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", 
+        "navajowhite", "navy", "navyblue", "none", "oldlace", "olive", "olivedrab", "orange", "orangered", 
+        "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", 
+        "peru", "pink", "plum", "powderblue", "purple", "rebeccapurple", "red", "rosybrown", "royalblue", 
+        "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "silver", "skyblue", 
+        "slateblue", "slategray", "slategrey", "snow", "springgreen", "steelblue", "tan", "teal", "thistle", 
+        "tomato", "transparent", "turquoise", "violet", "violetred", "webgray", "webgreen", "webgrey", 
+        "webmaroon", "webpurple", "wheat", "white", "whitesmoke", "x11gray", "x11green", "x11grey", 
+        "x11maroon", "x11purple"};
+}
+
+vector<string> nodeShapes(){
+    return vector<string>{"box", "polygon","ellipse","oval","circle","point","plaintext","plain","diamond",
+        "pentagon","hexagon","record", "rect","rectangle","square","star","none","underline","box3d"};
+}
+
+bool dataValidation(string data, const vector<string> &repo){
+    vector<string> temp;
+    size_t pos = 0;
+    while((pos = data.find(':')) != string::npos){
+        temp.push_back(data.substr(0,pos));
+        data.erase(0, pos + 1);
+    }
+    for(auto i : temp){
+        for(auto j : repo)
+            if (i == j)
+                return true;
+    }
+    return false;
+}
 
 struct edge{
     string node1, node2;
@@ -13,13 +71,13 @@ struct edge{
     edge(int n1, int n2, string color, string shape){
         node1 = 'N' + to_string(n1);
         node2 = 'N' + to_string(n2);
-        att["color"] = color;
+        att["color"] = (dataValidation(color, colors()) ? color : "black");
         att["arrowType"] = shape;
     }
     edge(int n1, string _ending, string color, string shape){
         node1 = 'N' + to_string(n1);
         ending = _ending;
-        att["color"] = color;
+        att["color"] = (dataValidation(color, colors()) ? color : "black");
         att["arrowType"] = shape;
     }
 };
@@ -32,8 +90,8 @@ template <typename T> struct node{
     node(int _id, const T &d, string color, string shape){
         id = _id;
         data = d;
-        att["color"] = color;
-        att["shape"] = shape;
+        att["fillcolor"] = (dataValidation(tolower(color), colors()) ? tolower(color) : "black");
+        att["shape"] = (dataValidation(tolower(shape), nodeShapes()) ? tolower(shape) : "box");
     }
 };
 
@@ -83,9 +141,9 @@ public:
         cout << ((directed) ? "graph " : "digraph ") << "{\n";
         for(auto i : nodes) {
             cout << tab << 'N' << i.id 
-                 << " [label= \"" << i.data << "\","
-                 << "color= \"" << i.att["color"] << "\","
-                 << "shape= \"" << i.att["shape"] << "\"];\n";
+                 << " [label=\"" << i.data << "\", "
+                 << "fillcolor=\"" << i.att["fillcolor"] << "\", "
+                 << "shape=\"" << i.att["shape"] << "\"];\n";
         }
         for(auto i : edges) {
             cout << tab << i.node1 
@@ -99,11 +157,12 @@ public:
 int main(){
     graph<int> temp1;
 
-    for(int i = 1; i <= 5; i++){
-        temp1.addNode(i);
-    }
+    // for(int i = 1; i <= 5; i++){
+    //     temp1.addNode(i);
+    // }
 
-    temp1.addNode(1,"Red");
+    temp1.addNode(1,"Red:black");
+
     temp1.addNode(3,"Orange","Record");
     temp1.addEdge(1,6);
     temp1.addEdge(3,10);
@@ -111,8 +170,11 @@ int main(){
     temp1.addEndEdge(6);
     temp1.addEdge(0,1);
     temp1.addEdge(5,4);
+    temp1.addNode(100,"pissyellow:orange");
 
     temp1.printGraph();
+
+    // cout << dataValidation <string, vector<string>> ("red", nodeColor());
 
 
 }
