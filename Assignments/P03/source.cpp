@@ -129,7 +129,7 @@ struct edge{
     map<string, string> att;
 
     edge(int n1, int n2, string color, string arrowhead, string dir, 
-    float arrowSize){
+            float arrowSize){
         node1 = 'N' + to_string(n1);
         node2 = ((n2==-1) ? "NULL" : 'N' + to_string(n2));
         float arrowsize = arrowSize;
@@ -137,15 +137,19 @@ struct edge{
         att["arrowhead"] = dataValidation(tolower(arrowhead), arrowheads());
         att["dir"] = dataValidation(tolower(dir), edgeDirs());
     }
+    
     void printEdge(const string &line, string node1Ref = "",
-    string node1Loc = "", string node2Ref = "", string node2Loc = ""){
-        cout << "    " << node1 << ((node1Ref=="") ? "" : ":" + node1Ref + ":" + node1Loc) << line;
-        cout << node2 << ((node2Ref=="") ? "" : ":" + node2Ref + ":" + node2Loc);
+            string node1Loc = "", string node2Ref = "", string node2Loc = ""){
+        cout << "    " << node1 << ((node1Ref=="") ? "" : ":" + node1Ref + ":" 
+                + node1Loc) << line;
+        cout << node2 << ((node2Ref=="") ? "" : ":" + node2Ref + ":" 
+                + node2Loc);
         if(node2=="NULL")
             cout << " [dir=\"forward\"]";
         else{
             cout << " [";
-            for(map<string,string>::iterator i = att.begin(); i!=(att.end());i++) {
+            for(map<string,string>::iterator i = att.begin(); 
+                    i!=(att.end());i++) {
                 cout << i->first << "=\"" << i->second << '\"';
                 cout << ((i==--(att.end())) ? ']' : ',');
             }
@@ -195,17 +199,6 @@ template <typename T> struct node{
     void updateValue(const T &newData){
         data = newData;
     }
-    // void newAtt(const string &key, const string &value){
-    //     for(auto i : type){
-    //         if (i.first == key){
-    //             i.second = value;
-    //             return;
-    //         }
-    //     }
-    //     type[key] == value;
-    // }
-
-
 };
 
 template <typename T> class graph {
@@ -217,11 +210,15 @@ private:
     string type;
 
 public:
-    graph(string _graphType = "standard", string _rankdir = "LR", bool _directed = false){
+    graph(string _graphType = "standard", string _rankdir = "LR", 
+            bool _directed = false){
         directed=_directed;
-        graphAtt["type"] = ((count(graphAtt["type"]," ")) ? removeSpaces(dataValidation(tolower(_graphType), graphTypes())) : dataValidation(tolower(_graphType), graphTypes()));
+        graphAtt["type"] = ((count(graphAtt["type"]," ")) ? 
+                removeSpaces(dataValidation(tolower(_graphType), graphTypes())) 
+                : dataValidation(tolower(_graphType), graphTypes()));
 
         string temp = dataValidation(tolower(_rankdir), rankDirs());
+
         graphAtt["rankdir"] = toUpper(temp);
 
     }
@@ -242,19 +239,19 @@ public:
 
     void addNode(const T &data, string color = "black", 
             string shape = "record", string gradAngle = "0") {
-        if(graphAtt["type"]=="linkedlist"||graphAtt["type"]=="doublylinkedlist"){
+        if(graphAtt["type"]=="linkedlist"||
+                graphAtt["type"]=="doublylinkedlist"){
             shape = "record";
         }
+        
         nodes.push_back(node<T>(nodes.size(),data,color,shape, gradAngle));
     }
 
     void addEdge(int fromNodeID, int toNodeID = -1, string color = "black", 
-    string arrowhead = "normal", string direction = "forward",
-    float arrowSize = 1)
-    {   
-        if(toNodeID != -1 && !nodeCheck(toNodeID))
-            toNodeID = -2;
-        if(nodeCheck(fromNodeID) && ((toNodeID == -1) ? true : nodeCheck(toNodeID)))
+            string arrowhead = "normal", string direction = "forward",
+            float arrowSize = 1){   
+        if(nodeCheck(fromNodeID) && ((toNodeID == -1) ? true : 
+                nodeCheck(toNodeID)))
             edges.push_back(edge(fromNodeID,toNodeID,color,arrowhead, 
                     direction, arrowSize));
         else 
@@ -267,7 +264,8 @@ public:
         string tab = "    ";
         string open = "";
         string close = "";
-        if (graphAtt["type"]=="linkedlist"||graphAtt["type"]=="doublylinkedlist"){
+        if (graphAtt["type"]=="linkedlist"||
+                graphAtt["type"]=="doublylinkedlist"){
             open = "{";
             close = "}";
         }
@@ -281,7 +279,7 @@ public:
         }
         for(auto i : nodes) {
             cout << tab << 'N' << i.id;
-            cout << " [label=\"" << open << ((graphAtt["type"] == "linkedlist") 
+            cout << " [label=\"" << open << ((graphAtt["type"] == "linkedlist")
             ? "<data>"+to_string(i.data) + " | <next>" : to_string(i.data)) 
             << close << "\", "; 
                     
@@ -307,14 +305,16 @@ public:
             }
         }
         else if(graphAtt["type"] == "linkedlist"){
-            cout << tab << "NULL [shape=\"plaintext\"]\n\n";
-            cout << tab << "edge [tailclip=\"false\", arrowtail=dot, dir=both]\n";
+            cout << tab << "NULL [shape=\"plaintext\"]\n\n"
+                 << tab << "edge [tailclip=\"false\", arrowtail=dot, dir=both]"
+                 << "\n";
             vector<edge> temp;
 
             for(int i = 0; i < nodes.size()-1;i++){
                 temp.push_back(edge(i,i+1,"black","normal","forward", 1));
             }
-            temp.push_back(edge(nodes.size()-1,-1,"black","normal","forward", 1));
+            temp.push_back(edge(nodes.size()-1,-1,"black","normal",
+                    "forward", 1));
             for(auto i : temp){
                 i.printEdge(line,"next","1");
             }
@@ -349,24 +349,6 @@ int main(){
     for(int i = 1; i <= 10; i++){
         temp1.addNode(i);
     }
-
-
-
-
-    // temp1.addNode(1,"Red:black","star","45");
-
-    // temp1.addNode(3,"orange","gooply-gook");
-    // temp1.addEdge(1,6);
-    // temp1.updateNode(0,"fillcolor","yellow:red");
-    // temp1.addEdge(3,10);
-    // temp1.addEdge(4,-1);
-    // temp1.addEdge(6);
-    // temp1.addEdge(10,1);
-    // temp1.addEdge(5,4);
-    // temp1.addNode(100,"pissyellow:orange");
-    // temp1.updateNode(4,"shape","box");
-    // temp1.updateNode(5,"color","red");
-
     temp1.printGraph();
 
 
