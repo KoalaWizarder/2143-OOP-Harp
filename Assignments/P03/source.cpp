@@ -14,10 +14,10 @@ string tolower(string &input){
         temp += ((*i=='-') ? ' ' : tolower(*i));
     return temp;
 }
-string toUpper(string &input){
+string toupper(string &input){
     string temp;
     for(auto i = input.begin(); i != input.end(); i++)
-        temp += ((*i==':') ? ':' : ((*i==' '||*i=='-') ? ' ' : toupper(*i)));
+        temp += ((*i=='-') ? ' ' : toupper(*i));
     return temp;
 }
 string removeSpaces(string input){
@@ -219,7 +219,7 @@ public:
 
         string temp = dataValidation(tolower(_rankdir), rankDirs());
 
-        graphAtt["rankdir"] = toUpper(temp);
+        graphAtt["rankdir"] = toupper(temp);
 
     }
 
