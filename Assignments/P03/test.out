@@ -1,0 +1,14 @@
+digraph standard {
+    rankdir=LR;
+    N0 [label="1", color="black", shape="record"];
+    N1 [label="2", color="black", shape="record"];
+    N2 [label="3", color="black", shape="record"];
+    N3 [label="4", color="black", shape="record"];
+    N4 [label="5", color="black", shape="record"];
+    N5 [label="6", color="black", shape="record"];
+    N6 [label="7", color="black", shape="record"];
+    N7 [label="8", color="black", shape="record"];
+    N8 [label="9", color="black", shape="record"];
+    N9 [label="10", color="black", shape="record"];
+    N0 -> N5
+}
