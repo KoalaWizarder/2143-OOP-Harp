@@ -1,30 +1,93 @@
+/******************************************************************************        
+*  Author:           Mervyn Harp
+*  Email:            mtharp0818@msutexas.edu
+*  Label:            05-P03
+*  Title:            Program 3 - Graphiz Class
+*  Course:           CMPS 2143
+*  Semester:         SPRING 2023
+* 
+*  Description:
+*     []Program builds the base code that will be used by Graphiz libary (DOT- 
+            syntax) in order to build a graph
+*  Usage:
+*     []class graph   ->   Please view the 'Constructors' section within the 
+*                               class definitions to see each way a Vector can 
+*                               be created
+*  Files:            
+*     [] test.out   :   Output file where results are printed
+******************************************************************************/
+
 #include <iostream>
 #include <map> 
 #include <vector>
 #include <string>
 #include <cstring>
-#include<algorithm>
+#include <fstream>
+#include <algorithm>
 
 using namespace std;
 
-
+/******************************************************************************        
+* tolower(string &input):  
+*
+* Description: 
+*       [] Accepts input string, then returns a copy of that string with all 
+*           of its characters as lowercase.
+*       [*] Will replace any '-' character with ' '
+* Parameters:  
+*       [] string &input    :   [] String to be copied               
+* Returns:
+*       [] string temp      :   [] Altered string                            */
 string tolower(string &input){
     string temp;
     for(auto i = input.begin(); i != input.end(); i++)
         temp += ((*i=='-') ? ' ' : tolower(*i));
     return temp;
 }
+/******************************************************************************        
+* tolower(string &input):  
+*
+* Description: 
+*       [] Accepts input string, then returns a copy of that string with all 
+*           of its characters as uppercase.
+*       [*] Will replace any '-' character with ' '
+* Parameters:  
+*       [] string &input    :   [] String to be copied               
+* Returns:
+*       [] string temp      :   [] Altered string                            */
 string toupper(string &input){
     string temp;
     for(auto i = input.begin(); i != input.end(); i++)
         temp += ((*i=='-') ? ' ' : toupper(*i));
     return temp;
 }
+/******************************************************************************        
+* removeSpaces(string iinput):  
+*
+* Description: 
+*       [] Accepts input string, then returns that string with all of its 
+*           empty characters (ie ' ') removed.
+* Parameters:  
+*       [] string input    :   [] String to be altered               
+* Returns:
+*       [] string input    :   [] Altered string                            */
 string removeSpaces(string input){
     remove(input.begin(), input.end(), ' ');
     input.pop_back();
     return input;
 }
+/******************************************************************************
+* count(string input, string key):
+*
+* Description:
+*       [] Accepts input string and checks to see if it contains the same value
+*           as key. If so, return true. Otherwise return false
+* Parameters:
+*       [] string input     :   [] String to be checked
+*       [] string key       :   [] String to be searched for within 'input'
+* Returns:
+*       [] bool             : True if 'key' is found with 'input'
+*                           : False otherwise                                */
 bool count(string input, string key){
     for(auto i : input){
         if (i==*(key.data()))
@@ -33,6 +96,20 @@ bool count(string input, string key){
     return false;
 }
 
+/******************************************************************************
+* ALL of the following Vectors:
+*
+* Description:
+*       [] Each of these serve as a repository of sorts that this program will
+*           use within the function, 'dataValidation()' to make sure that each
+*           value trying to be used is a valid input.
+*       [*] Note: These vectors do NOT contain every color, node shape, 
+*           arrowhead, etc. Please check to make sure each value you are trying
+*           to use is found within these Vectors
+* Parameters:
+*       [] N/A
+* Returns:
+*       [] vector<string>   : Vector containing each valid input string      */
 vector<string> colors(){
     return vector<string>{"black", "aqua", "aquamarine", "azure", "beige", 
     "bisque", "blue", "blueviolet", "brown", "cadetblue", "chartreuse", 
@@ -90,9 +167,24 @@ vector<string> validEdgeAtt(){
     return vector<string>{"", "color","arrowhead","dir"};
 }
 vector<string> rankDirs(){
-    return vector<string>{"lr","tb","bt","rl"};
+    return vector<string>{"LR","TB","BT","RL"};
 }
 
+/******************************************************************************
+* string dataValidation(string data, const vector<string> &repo):
+*
+* Description:
+*       [] Accepts input data and a corresponding Vector repository to check
+*           data is within that particular repo. 
+*       [] If data is not found, data is changed to the default value of each
+*           Vector, which is whatever the first value is inside each Vector
+* Parameters:
+*       [] string data                  :   String to be checked
+*       [] const vector<string> &repo   :   Vector to be searched through to 
+*                                             find 'data'
+* Returns:
+*       [] string final     :   Returns 'data' if data was found within Repo
+*                           :   ROtherwise, returns default of repo          */
 string dataValidation(string data, const vector<string> &repo){
     vector<string> temp;
     string final;
@@ -123,6 +215,16 @@ string dataValidation(string data, const vector<string> &repo){
     return final;
 }
 
+/******************************************************************************
+* struct edge:
+*
+* Description:
+*       [] Creates and holds data for each edge used within graph class
+* Usage(NEEDED PARAMETERS):
+*   []  edge(int n1, int n2, string color, string arrowhead, string dir, 
+*         float arrowSize)              :   ONLY constructor for edge struct
+*   []  printEdge(const string &line)   :   Returns string with all of the 
+*                                             info needed from edge          */
 struct edge{
     string node1, node2;
     string ending;
@@ -138,26 +240,39 @@ struct edge{
         att["dir"] = dataValidation(tolower(dir), edgeDirs());
     }
     
-    void printEdge(const string &line, string node1Ref = "",
-            string node1Loc = "", string node2Ref = "", string node2Loc = ""){
-        cout << "    " << node1 << ((node1Ref=="") ? "" : ":" + node1Ref + ":" 
-                + node1Loc) << line;
-        cout << node2 << ((node2Ref=="") ? "" : ":" + node2Ref + ":" 
-                + node2Loc);
-        if(node2=="NULL")
-            cout << " [dir=\"forward\"]";
+    string printEdge(const string &line, string node1Ref = "",
+            string node1Loc = "", string node2Ref = "", string node2Loc = "") {
+        string temp = "";
+        temp += ("    " + node1 + ((node1Ref=="") ? "" : ":" + node1Ref + ":" 
+                + node1Loc) + line);
+        temp += (node2 + ((node2Ref=="") ? "" : ":" + node2Ref + ":" 
+                + node2Loc));
+        
+        if(node2=="NULL"){
+            temp += " [dir=\"forward\"]";
+        }
         else{
-            cout << " [";
+            temp += " [";
             for(map<string,string>::iterator i = att.begin(); 
                     i!=(att.end());i++) {
-                cout << i->first << "=\"" << i->second << '\"';
-                cout << ((i==--(att.end())) ? ']' : ',');
+                temp += (i->first + "=\"" + i->second + '\"');
+                temp += ((i==--(att.end())) ? ']' : ',');
             }
         }
-        cout << '\n';
+        temp += "\n";
+        return temp;
     }
 };
 
+/******************************************************************************
+* <typename T> struct node:
+*
+* Description:
+*       [] Creates and holds data for each node used within graph class
+*       [*] Typeneame 'T' determines the data type held within each node
+* Usage:
+*       [] node(int _id, const T &d, string color, string shape, 
+*           string gradAngle)   :   ONLY Constructor for node struct         */
 template <typename T> struct node{
     int id;
     T data;
@@ -201,6 +316,36 @@ template <typename T> struct node{
     }
 };
 
+/******************************************************************************
+* <typename T> class graph:
+*
+* Description:
+*       [] Creates and holds data for the graph itself, as well as containing 
+*           the Vector of nodes and Vector of edges that make up each graph
+*       [*] Typeneame 'T' determines the data type held within the graph
+* Usage:
+*       [] graph(string _graphType = "standard", string _rankdir = "LR", 
+*           bool _directed = false)   :   ONLY Constructor(is considered default) 
+*                                           for graph class       
+
+*       [] void updateNode(const int &nodeID, const string &key, 
+*           const string &value)      :   Searches node for 'key', then updates
+*                                           corresponding value to new 'value' 
+
+*       [] void updateEdge(const int &nodeID, const string &key, 
+*           const string &value)      :   Searches edge for 'key', then updates
+*                                           corresponding value to new 'value'
+
+*       [] void addNode(const T &data, string color = "black", 
+*           string shape = "record", string gradAngle = "0")
+*                                     :   Adds node to graph
+
+*       [] void addEdge(void addEdge(int fromNodeID, int toNodeID = -1, 
+*           string color = "black", string arrowhead = "normal", 
+*           string direction = "forward", float arrowSize = 1)      
+                                      : Adds edge to graph
+
+*       [] void printGraph()          : Outputs entire graph to terminal AND 'test.out'*/
 template <typename T> class graph {
 private:
     vector<node<T>> nodes;
@@ -219,7 +364,7 @@ public:
 
         string temp = dataValidation(tolower(_rankdir), rankDirs());
 
-        graphAtt["rankdir"] = toupper(temp);
+        graphAtt["rankdir"] = dataValidation(toupper(temp), rankDirs());
 
     }
 
@@ -260,6 +405,9 @@ public:
 
 
     void printGraph(){
+        ofstream fout;
+        fout.open("test.out");
+        
         string line = ((directed) ? " -- " : " -> ");
         string tab = "    ";
         string open = "";
@@ -273,19 +421,29 @@ public:
 
         cout << ((directed) ? "graph " : "digraph ") << graphAtt["type"] 
              << " {\n";
+        fout << ((directed) ? "graph " : "digraph ") << graphAtt["type"] 
+             << " {\n";
         for(auto i : graphAtt) {
-            if(i.first!="type")
+            if(i.first!="type"){
                 cout << tab << i.first << '=' << i.second << ";\n";
+                fout << tab << i.first << '=' << i.second << ";\n";
+            }
         }
         for(auto i : nodes) {
             cout << tab << 'N' << i.id;
+            fout << tab << 'N' << i.id;
             cout << " [label=\"" << open << ((graphAtt["type"] == "linkedlist")
-            ? "<data>"+to_string(i.data) + " | <next>" : to_string(i.data)) 
-            << close << "\", "; 
-                    
+                 ? "<data>"+to_string(i.data) + " | <next>" : to_string(i.data)) 
+                 << close << "\", "; 
+            fout << " [label=\"" << open << ((graphAtt["type"] == "linkedlist")
+                 ? "<data>"+to_string(i.data) + " | <next>" : to_string(i.data)) 
+                 << close << "\", "; 
+        
             for(map<string,string>::iterator j = i.att.begin(); 
             j != (i.att.end()); j++ ){
                 cout << j->first << "=\"" << j->second << "\""
+                     << ((j == --(i.att.end())) ? "];\n" : ", ");
+                fout << j->first << "=\"" << j->second << "\""
                      << ((j == --(i.att.end())) ? "];\n" : ", ");
             }
         }
@@ -301,11 +459,15 @@ public:
                 count+=2;
             }
             for(auto i : temp){
-                i.printEdge(line);
+                cout << i.printEdge(line);
+                fout << i.printEdge(line);
             }
         }
         else if(graphAtt["type"] == "linkedlist"){
             cout << tab << "NULL [shape=\"plaintext\"]\n\n"
+                 << tab << "edge [tailclip=\"false\", arrowtail=dot, dir=both]"
+                 << "\n";
+            fout << tab << "NULL [shape=\"plaintext\"]\n\n"
                  << tab << "edge [tailclip=\"false\", arrowtail=dot, dir=both]"
                  << "\n";
             vector<edge> temp;
@@ -316,12 +478,15 @@ public:
             temp.push_back(edge(nodes.size()-1,-1,"black","normal",
                     "forward", 1));
             for(auto i : temp){
-                i.printEdge(line,"next","1");
+                cout << i.printEdge(line,"next","1");
+                fout << i.printEdge(line,"next","1");
             }
         }
         else if(graphAtt["type"] == "doublylinkedlist"){
             cout << tab << "NULL [shape=\"plaintext\"]\n\n";
+            fout << tab << "NULL [shape=\"plaintext\"]\n\n";
             cout << tab << "edge [dir=both]\n";
+            fout << tab << "edge [dir=both]\n";
             vector<edge> temp;
 
             for(int i = 0; i < nodes.size()-1;i++){
@@ -337,19 +502,23 @@ public:
                 cout << tab << i.node1 
                     << line
                     << ((i.ending.empty()) ? i.node2 : i.ending) << '\n';
+                fout << tab << i.node1 
+                    << line
+                    << ((i.ending.empty()) ? i.node2 : i.ending) << '\n';
             }
         }
         cout << "}\n";
+        fout << "}\n";
     }
 };
 
 int main(){
-    graph<int> temp1("linkedlist", "TD");
+    graph<int> temp1("standard", "TD");
 
     for(int i = 1; i <= 10; i++){
         temp1.addNode(i);
     }
+
+    temp1.addEdge(0, 5, "red:yellow");
     temp1.printGraph();
-
-
 }
