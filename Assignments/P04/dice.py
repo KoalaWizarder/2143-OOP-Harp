@@ -13,7 +13,6 @@ def dieTester(diceObj, runs=10, testType="sum"):
           print(diceObj.roll(), end=" ")
       print("]")
     else:
-      # print(f"Rolling {len(diceObj.dice)} {len(diceObj.dice[0].sides)} sided die {runs} times to get the {testType} value:")
       print(f"Rolling {len(diceObj.dice)}d{diceObj.dice[0].sides} [{runs}] times to get the {testType} value:")
       diceObj.rollDice()
       print("    [ ", end="")
