@@ -1,7 +1,6 @@
 import sys
 from rich import print
 import random
-import nltk
 import math
 
 def round_half_up(n, decimals=0):
@@ -29,7 +28,7 @@ class Dice:
     if isinstance(sides, str):
       # Build List without '.' (4.d.12 -> '4', 'd', '12')
       list1 = sides.split('.')  
-      sides,num_dice = int(list1[0]),int(list1[2])
+      num_dice, sides = int(list1[0]),int(list1[2])
     elif not isinstance(sides, int):
         print("Error! Improper 'Dice' Construction Syntax")
         sys.exit()
@@ -85,8 +84,7 @@ if __name__=='__main__':
   print(d1)
   print(d2)
   print(d2.roll())
-  d3 = Dice()
-  d3.fromString("2.d.20")
+  d3 = Dice("2.d.20")
   print(d3)
   d3.rollDice()
   print(f"\n{d3}")
