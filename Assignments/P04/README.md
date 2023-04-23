@@ -14,8 +14,7 @@ Program uses Python to implement a Die and Dice class.
 
 ### Instructions
 
-- As it stands, the program will simply run and allow you to trace its workings through the easy-to-follow commands found within `main()`
-    - (No user-input required)
+- As it stands, the program will simply run and allow you to trace its workings through the easy-to-follow commands found within `main()`(No user-input required)
 
 - Example Command:
     - `foo = Die(s)` - Initalizes a singular die of size `s` (Default: `s = 6`)
