@@ -15,11 +15,12 @@ Program uses Python to implement a Die and Dice class.
 ### Instructions
 
 - As it stands, the program will simply run and allow you to trace its workings through the easy-to-follow commands found within `main()`
-- Parameters: `N/A`
 
 - Example Command:
-    - `foo = Die(s)` - Initalizes a singular die of size `s` (Default `6`)
+    - `foo = Die(s)` - Initalizes a singular die of size `s` (Default: `s = 6`)
       - `foo.roll()` - Returns a random `int` between `1` and `s`
-    - `bar = Dice(s,n)` - Initializes a object containing (`n`) `Die` objects of size `s`
-      - `bar.rollDice()` - Rolls each `Die` within `bar`, then saves the results
+    - `bar = Dice(s,n)` - Initializes a object containing (`n`) `Die` objects of size `s` (Default: `n = 1`, `s = 6`)
+      - `bar.rollDice()` - Rolls each `Die` within `bar`, then saves the results within `bar.rolls[]`
       - `bar.max()` - Returns maximum value chosen from rolls within `bar` (Dice Object)
+
+- Parameters: `N/A`
