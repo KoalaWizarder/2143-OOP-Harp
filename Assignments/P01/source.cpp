@@ -38,7 +38,7 @@ struct node{
     node* prev;             //Hold pointer to prev node for use in Vector class
 
     //Default constructor for node. Allows for easy pass-in of next/prev
-    node(int n = NULL, node* _next = nullptr, node* _prev = nullptr){
+    node(int n = 0, node* _next = nullptr, node* _prev = nullptr){
         data = n;
         next = _next;
         prev = _prev;
