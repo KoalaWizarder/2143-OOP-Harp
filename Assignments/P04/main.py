@@ -11,16 +11,16 @@
 *     [] Program uses dice.py to build Die and Dice objects that serve as 
 *               custom-size dice rollers.
 *  Usage:
-*     []class Die   ->   Please view the 'Constructors' section within the 
+*     [] class Die   ->   Please view the 'Constructors' section within the 
 *                               class definitions to see each way a (Die)
 *                               can be created
-*     []class Dice  ->   Please view the 'Constructors' section within the 
+*     [] class Dice  ->   Please view the 'Constructors' section within the 
 *                               class definitions to see each way a (Dice)
 *                               can be created
 *  Files:            
-*     [] main.py   :   Main driver file that displays Die/Dice class 
-*                             functionality
-*     [] dice.py   :   File where Die/Dice objects are defined/implemented
+*     [] main.py     ->   Main driver file that displays Die/Dice class 
+*                                functionality
+*     [] dice.py     ->   File where Die/Dice objects are defined/implemented
 ******************************************************************************/
 from dice import Die
 from dice import Dice
