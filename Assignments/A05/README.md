@@ -13,8 +13,10 @@ any special description of the fight location.
 ## Party
 Is a collection of `Entity`. Most commonly, these will be `Player`, but the option exists to have a `Monster` within the `Party`. Allows for storage of Party Loot 
 and any Social Renown the `Party` may have due to their exploits
+## AbilityScr
+Represents a single ability, such as `Strength`, `Dexterity`, `Constitution`, `Intelligence`, `Wisdom`, and `Charisma`
 ## Entity
-Represents any Player Character or monster within the game. Attributes include `hitpoints`, `type`, an array of `AbilityScr`, description of any 
+Represents any Player Character or monster within the game. Attributes include `hitpoints`, `type`, an array of [6] `AbilityScr`, description of any 
 special abilities, and an array of `item` which represents any gear the `Entity` has.
 ## Monster:
 Child-Class of `Entity`. Has designated area for any `Special Attacks` or `Special Defenses` of the `Monster`.
